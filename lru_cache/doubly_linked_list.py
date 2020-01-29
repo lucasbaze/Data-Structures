@@ -53,8 +53,8 @@ class DoublyLinkedList:
         self.length += 1
 
         if not self.head and not self.tail:
-            self.head = node
-            self.tail = node
+            self.head = new_node
+            self.tail = new_node
         else: 
             new_node.next = self.head
             self.head.prev = new_node
@@ -96,7 +96,7 @@ class DoublyLinkedList:
         self.length -= 1 
         
         # LL is empty
-        if size.length == 0:
+        if self.length == 0:
             return 
 
         # node is head and tail

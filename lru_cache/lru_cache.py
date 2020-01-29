@@ -1,6 +1,6 @@
 import sys
 sys.path.append('../doubly_linked_list')
-from doubly_linked_list import DoublyLinkedList
+from doubly_linked_list import (DoublyLinkedList, ListNode)
 
 class LRUCache:
     """
@@ -12,7 +12,7 @@ class LRUCache:
     """
     def __init__(self, limit=10):
         self.limit = limit
-        self.size = None
+        self.size = 0
         self.LL = DoublyLinkedList()
         self.hashT = {}
 
@@ -26,7 +26,17 @@ class LRUCache:
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
-        pass
+        if not self.hashT.get(key):
+            return None;
+
+        else:
+            node = self.hashT.get(key)
+
+            # move the node to the beginning
+            self.LL.move_to_front(node)
+
+            # get the value and return it 
+            return node.value
 
     """
     Adds the given key-value pair to the cache. 
@@ -44,4 +54,30 @@ class LRUCache:
 
     """
     def set(self, key, value):
-        pass
+        # Check if the item already exists
+        node = self.hashT.get(key)
+
+        # Check if the node is none ( Put action)
+        if node is not None:
+            node.value = value
+            self.LL.move_to_front(node)
+
+        else: # The node doesn't exist yet
+
+            # if at capacity
+            if self.size == self.limit:
+                # Remove from tail
+                self.LL.remove_from_tail()
+                
+                #decrement LRU cache size
+                self.size -= 1
+            
+            # Add to the hash table
+            new_node = ListNode(value)
+            self.hashT[key] = new_node
+
+            # Add to the beginning of the LL
+            self.LL.add_to_head(new_node)
+
+            # incremenet size of list
+            self.size += 1
