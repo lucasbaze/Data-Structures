@@ -140,8 +140,37 @@ class BinarySearchTree:
 
     # Print In-order recursive DFT
     def pre_order_dft(self, node):
-        pass
+        s = Stack()
+        s.push(node)
+
+        while s.len() > 0:
+            current_node = s.pop()
+            print(current_node.value)
+
+            if current_node.right is not None:
+                s.push(current_node.right)
+            if current_node.left is not None:
+                s.push(current_node.left)
 
     # Print Post-order recursive DFT
     def post_order_dft(self, node):
-        pass
+        # Post order is (Left, Right, Root) traversal
+        # output [2, 4, 3, 6, 7, 5, 8, 1]
+        # Need to stack the elements first to the bottom left leaf first
+
+        s = Stack()
+        s.push(node)
+
+        def add_to_stack(node):
+            if node.right:
+                s.push(node.right)
+                add_to_stack(node.right)
+            if node.left:
+                s.push(node.left)
+                add_to_stack(node.left)
+            
+        add_to_stack(node)
+
+        while s.len() > 0:
+            print(s.pop().value)
+
